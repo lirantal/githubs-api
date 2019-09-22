@@ -5,7 +5,7 @@ const Octokit = require('@octokit/rest')
 const debug = require('debug')('githubrepos-api')
 
 module.exports = class GitHubRepos {
-  constructor (config) {
+  constructor(config) {
     const octokit = new Octokit({
       auth: config.githubToken
     })
@@ -13,7 +13,7 @@ module.exports = class GitHubRepos {
     this.octokit = octokit
   }
 
-  async updateRepoFeatures (features, {repoItem}) {
+  async updateRepoFeatures(features, { repoItem }) {
     const owner = repoItem.owner.login
 
     for (const feature in features) {
@@ -43,7 +43,7 @@ module.exports = class GitHubRepos {
     return null
   }
 
-  async getAll ({repoFilter, nameFilter}) {
+  async getAll({ repoFilter, nameFilter }) {
     let reposList = []
 
     const options = await this.octokit.repos.list.endpoint.merge({
@@ -70,7 +70,7 @@ module.exports = class GitHubRepos {
     return reposList
   }
 
-  async update ({repoFilter, features}) {
+  async update({ repoFilter, features }) {
     const options = await this.octokit.repos.list.endpoint.merge({
       type: repoFilter.type,
       sort: 'full_name',
@@ -85,7 +85,9 @@ module.exports = class GitHubRepos {
       reposList = reposList.concat(response.data)
 
       for (const repoItem of response.data) {
-        const itemChanged = await this.updateRepoFeatures(features, {repoItem})
+        const itemChanged = await this.updateRepoFeatures(features, {
+          repoItem
+        })
         if (itemChanged) {
           itemsChangedDetails.push(itemChanged)
           itemsChangedTotal++

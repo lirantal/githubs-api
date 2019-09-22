@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier-standard '**/*.js'",
+    "//format": "prettier-standard '**/*.js'",
+    "format": "prettier --config .prettierrc.js --write '**/*.js'",
     "test": "jest",
     "test:watch": "jest --watch",
     "coverage:view": "open-cli coverage/lcov-report/index.html",
@@ -63,7 +64,7 @@
     "lint-staged": "^9.2.0",
     "nock": "^11.3.5",
     "open-cli": "^5.0.0",
-    "prettier-standard": "^9.1.1",
+    "prettier": "^1.18.2",
     "semantic-release": "^15.13.19"
   },
   "jest": {
@@ -100,7 +101,7 @@
   },
   "lint-staged": {
     "**/*.js": [
-      "prettier-standard",
+      "npm run format",
       "git add"
     ]
   },

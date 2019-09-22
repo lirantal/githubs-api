@@ -1,7 +1,7 @@
 'use strict'
 
 const nock = require('nock')
-const {GitHubRepos} = require('../index')
+const { GitHubRepos } = require('../index')
 const mockReposList = require('./fixtures/repos-list.json')
 
 describe('Update repository settings', () => {
