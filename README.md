@@ -69,6 +69,15 @@ const requestOptions = {
 const result = await githubRepos.update(requestOptions)
 ```
 
+# API
+
+Current API support:
+
+| Class       | Methods                        |
+| ----------- | ------------------------------ |
+| GitHubRepos | update(repoFilter, features)   |
+|             | getAll(repoFilter, nameFilter) |
+
 # Contributing
 
 Please consult [CONTIRBUTING](./CONTRIBUTING.md) for guidelines on contributing to this project.
