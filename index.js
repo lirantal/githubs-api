@@ -1,3 +1,7 @@
 'use strict'
 
-module.exports = {}
+const GitHubRepos = require('./src/GitHubRepos')
+
+module.exports = {
+  GitHubRepos
+}
