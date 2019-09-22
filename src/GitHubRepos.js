@@ -12,25 +12,26 @@ module.exports = class GitHubRepos {
     this.octokit = octokit
   }
 
-  async updateRepoIssues (status, {repoItem}) {
+  async updateRepoFeatures (options, {repoItem}) {
+    const {feature, status} = options
     const owner = repoItem.owner.login
 
     if (
-      (status === 'on' && repoItem.has_issues === false) ||
-      (status === 'off' && repoItem.has_issues === true)
+      (status === 'on' && repoItem[`has_${feature}`] === false) ||
+      (status === 'off' && repoItem[`has_${feature}`] === true)
     ) {
-      debug(`Setting repository [${repoItem.name}] issues: [${status}]`)
+      debug(`Setting repository [${repoItem.name}] ${feature}: [${status}]`)
 
       await this.octokit.repos.update({
         owner,
         repo: repoItem.name,
-        has_issues: status === 'on'
+        [`has_${feature}`]: status === 'on'
       })
 
       return {
         owner,
         repo: repoItem.name,
-        issues: status
+        [feature]: status
       }
     }
 
@@ -53,8 +54,11 @@ module.exports = class GitHubRepos {
       reposList = reposList.concat(response.data)
 
       for (const repoItem of response.data) {
-        if (features.issues) {
-          const itemChanged = await this.updateRepoIssues(features.issues, {repoItem})
+        for (const feature in features) {
+          const itemChanged = await this.updateRepoFeatures(
+            {feature, status: features[feature]},
+            {repoItem}
+          )
           if (itemChanged) {
             itemsChangedDetails.push(itemChanged)
             itemsChangedTotal++

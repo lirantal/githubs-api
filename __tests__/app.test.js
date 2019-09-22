@@ -56,4 +56,64 @@ describe('Update repository settings', () => {
 
     expect(result.reposList.length).toBeTruthy()
   })
+
+  test('should be able to update wiki and projects features for all repos that have them disabled', async () => {
+    const GITHUB_API_URL = 'https://api.github.com'
+
+    nock(GITHUB_API_URL)
+      .persist()
+      .patch(/\/repos\/lirantal\/.*/, {
+        has_wiki: false
+      })
+      .reply(200)
+
+    nock(GITHUB_API_URL)
+      .persist()
+      .patch(/\/repos\/lirantal\/.*/, {
+        has_projects: false
+      })
+      .reply(200)
+
+    nock(GITHUB_API_URL)
+      .get('/user/repos')
+      .query({
+        type: 'owner',
+        sort: 'full_name',
+        per_page: 100
+      })
+      .reply(200, mockReposList)
+
+    const githubRepos = new GitHubRepos({
+      githubtoken: 'abc'
+    })
+
+    const requestOptions = {
+      repoFilter: {
+        type: 'owner'
+      },
+      features: {
+        wiki: 'off',
+        projects: 'off'
+      }
+    }
+
+    const result = await githubRepos.update(requestOptions)
+    expect(result).toMatchObject({
+      itemsChangedDetails: [
+        {
+          wiki: 'off',
+          owner: 'lirantal',
+          repo: 'thinky'
+        },
+        {
+          projects: 'off',
+          owner: 'lirantal',
+          repo: 'thinky'
+        }
+      ],
+      itemsChangedTotal: 2
+    })
+
+    expect(result.reposList.length).toBeTruthy()
+  })
 })
