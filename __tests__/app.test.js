@@ -104,14 +104,9 @@ describe('Update repository settings', () => {
           wiki: 'off',
           owner: 'lirantal',
           repo: 'thinky'
-        },
-        {
-          projects: 'off',
-          owner: 'lirantal',
-          repo: 'thinky'
         }
       ],
-      itemsChangedTotal: 2
+      itemsChangedTotal: 1
     })
 
     expect(result.reposList.length).toBeTruthy()
