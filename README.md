@@ -18,8 +18,6 @@
 
 # About
 
-githubs-api
-
 Manage GitHub repositories in bulk
 
 # Install
@@ -31,13 +29,45 @@ npm install --save githubs-api
 # Usage
 
 ```js
-// @TODO
-const {} = require('githubs-api')
+const {GitHubRepos} = require('githubs-api')
+
+// instantiate using a github token
+const githubRepos = new GitHubRepos({
+  githubtoken: 'abc'
+})
+
+// update repos in bulk based on settings
+// specified in requestOptions
+await githubRepos.update(requestOptions)
 ```
 
 # Example
 
-<!-- TODO -->
+```js
+const {GitHubRepos} = require('githubs-api')
+
+// provide a personal developer access token
+// obtained from the GitHub Developer Settings
+// page at: https://github.com/settings/tokens
+const githubRepos = new GitHubRepos({
+  githubtoken: 'abc'
+})
+
+// this will update all github repositories owned by
+// your user (as provided in the token) and set all
+// of them to remove the issues tab from the project
+// page
+const requestOptions = {
+  repoFilter: {
+    type: 'owner'
+  },
+  features: {
+    issues: 'off'
+  }
+}
+
+const result = await githubRepos.update(requestOptions)
+```
 
 # Contributing
 
