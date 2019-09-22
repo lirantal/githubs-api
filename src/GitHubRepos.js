@@ -43,6 +43,33 @@ module.exports = class GitHubRepos {
     return null
   }
 
+  async getAll ({repoFilter, nameFilter}) {
+    let reposList = []
+
+    const options = await this.octokit.repos.list.endpoint.merge({
+      type: repoFilter.type,
+      sort: 'full_name',
+      per_page: '100'
+    })
+
+    for await (const response of this.octokit.paginate.iterator(options)) {
+      if (nameFilter) {
+        let repos = []
+        for (const repo of response.data) {
+          if (repo.name.match(nameFilter)) {
+            repos = repos.concat(repo)
+          }
+        }
+
+        reposList = reposList.concat(repos)
+      } else {
+        reposList = reposList.concat(response.data)
+      }
+    }
+
+    return reposList
+  }
+
   async update ({repoFilter, features}) {
     const options = await this.octokit.repos.list.endpoint.merge({
       type: repoFilter.type,

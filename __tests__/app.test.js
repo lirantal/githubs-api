@@ -111,4 +111,59 @@ describe('Update repository settings', () => {
 
     expect(result.reposList.length).toBeTruthy()
   })
+
+  test('should be able to get repos list by a regex filter', async () => {
+    const GITHUB_API_URL = 'https://api.github.com'
+
+    nock(GITHUB_API_URL)
+      .get('/user/repos')
+      .query({
+        type: 'owner',
+        sort: 'full_name',
+        per_page: 100
+      })
+      .reply(200, mockReposList)
+
+    const githubRepos = new GitHubRepos({
+      githubtoken: 'abc'
+    })
+
+    const requestOptions = {
+      repoFilter: {
+        type: 'owner'
+      },
+      nameFilter: 'typeform'
+    }
+
+    const result = await githubRepos.getAll(requestOptions)
+    expect(result[0].name).toMatch('typeform')
+    expect(result[1].name).toMatch('typeform')
+    expect(result.length).toBe(2)
+  })
+
+  test('should be able to get all repos when no filter is provided', async () => {
+    const GITHUB_API_URL = 'https://api.github.com'
+
+    nock(GITHUB_API_URL)
+      .get('/user/repos')
+      .query({
+        type: 'owner',
+        sort: 'full_name',
+        per_page: 100
+      })
+      .reply(200, mockReposList)
+
+    const githubRepos = new GitHubRepos({
+      githubtoken: 'abc'
+    })
+
+    const requestOptions = {
+      repoFilter: {
+        type: 'owner'
+      }
+    }
+
+    const result = await githubRepos.getAll(requestOptions)
+    expect(result.length).toBe(3)
+  })
 })
