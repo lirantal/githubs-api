@@ -23,7 +23,13 @@
   },
   "license": "Apache-2.0",
   "keywords": [
-    "github, github client, github manager, github bulk, github actions"
+    "github",
+    "github client",
+    "github manager",
+    "github bulk",
+    "github actions",
+    "manager",
+    "bulk"
   ],
   "homepage": "https://github.com/lirantal/githubs-api",
   "bugs": {
