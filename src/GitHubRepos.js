@@ -13,7 +13,7 @@ module.exports = class GitHubRepos {
     this.octokit = octokit
   }
 
-  async updateRepoFeatures(features, { repoItem }) {
+  async updateRepoFeatures(features, { repoItem, dryRun }) {
     const owner = repoItem.owner.login
 
     for (const feature in features) {
@@ -25,11 +25,13 @@ module.exports = class GitHubRepos {
       ) {
         debug(`Setting repository [${repoItem.name}] ${feature}: [${status}]`)
 
-        await this.octokit.repos.update({
-          owner,
-          repo: repoItem.name,
-          [`has_${feature}`]: status === 'on'
-        })
+        if (dryRun !== true) {
+          await this.octokit.repos.update({
+            owner,
+            repo: repoItem.name,
+            [`has_${feature}`]: status === 'on'
+          })
+        }
 
         return {
           owner,
@@ -70,7 +72,11 @@ module.exports = class GitHubRepos {
     return reposList
   }
 
-  async update({ repoFilter, features }) {
+  async update({ repoFilter, features, dryRun }) {
+    if (dryRun === true) {
+      debug(`Detected dry-run mode, will not actually modify repository settings`)
+    }
+
     const options = await this.octokit.repos.list.endpoint.merge({
       type: repoFilter.type,
       sort: 'full_name',
@@ -86,7 +92,8 @@ module.exports = class GitHubRepos {
 
       for (const repoItem of response.data) {
         const itemChanged = await this.updateRepoFeatures(features, {
-          repoItem
+          repoItem,
+          dryRun
         })
         if (itemChanged) {
           itemsChangedDetails.push(itemChanged)
