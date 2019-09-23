@@ -5,14 +5,18 @@ const { GitHubRepos } = require('../index')
 const mockReposList = require('./fixtures/repos-list.json')
 
 describe('Update repository settings', () => {
+  beforeEach(() => {
+    nock.cleanAll()
+  })
+
   test('should be able to disable issues for all repos that have issues enabled', async () => {
     const GITHUB_API_URL = 'https://api.github.com'
 
     nock(GITHUB_API_URL)
-      .persist()
       .patch(/\/repos\/lirantal\/.*/, {
         has_issues: false
       })
+      .times(2)
       .reply(200)
 
     nock(GITHUB_API_URL)
@@ -61,14 +65,12 @@ describe('Update repository settings', () => {
     const GITHUB_API_URL = 'https://api.github.com'
 
     nock(GITHUB_API_URL)
-      .persist()
       .patch(/\/repos\/lirantal\/.*/, {
         has_wiki: false
       })
       .reply(200)
 
     nock(GITHUB_API_URL)
-      .persist()
       .patch(/\/repos\/lirantal\/.*/, {
         has_projects: false
       })
@@ -111,7 +113,9 @@ describe('Update repository settings', () => {
 
     expect(result.reposList.length).toBeTruthy()
   })
+})
 
+describe('Get repositories', () => {
   test('should be able to get repos list by a regex filter', async () => {
     const GITHUB_API_URL = 'https://api.github.com'
 
