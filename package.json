@@ -1,8 +1,4 @@
 {
-  "publishConfig": {
-    "provenance": true,
-    "access": "public"
-  },
   "name": "githubs-api",
   "version": "0.0.0-development",
   "description": "Manage GitHub repositories in bulk",
@@ -216,5 +212,9 @@
       }
     ],
     "@semantic-release/github"
-  ]
+  ],
+  "publishConfig": {
+    "provenance": true,
+    "access": "public"
+  }
 }
