@@ -10,7 +10,7 @@
   <a href="https://www.npmjs.org/package/githubs-api"><img src="https://badgen.net/npm/v/githubs-api" alt="npm version"/></a>
   <a href="https://www.npmjs.org/package/githubs-api"><img src="https://badgen.net/npm/license/githubs-api" alt="license"/></a>
   <a href="https://www.npmjs.org/package/githubs-api"><img src="https://badgen.net/npm/dt/githubs-api" alt="downloads"/></a>
-  <a href="https://travis-ci.org/lirantal/githubs-api"><img src="https://badgen.net/travis/lirantal/githubs-api" alt="build"/></a>
+  <a href="https://github.com/lirantal/githubs-api/actions/workflows/ci.yml"><img src="https://github.com/lirantal/githubs-api/actions/workflows/ci.yml/badge.svg?branch=master" alt="build"/></a>
   <a href="https://codecov.io/gh/lirantal/githubs-api"><img src="https://badgen.net/codecov/c/github/lirantal/githubs-api" alt="codecov"/></a>
   <a href="./SECURITY.md"><img src="https://img.shields.io/badge/Security-Responsible%20Disclosure-yellow.svg" alt="Responsible Disclosure Policy" /></a>
 </p>
